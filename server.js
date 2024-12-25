@@ -33,27 +33,21 @@
 //   console.log(`Сервер запущен на порту ${PORT}`);
 // });
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const app = express();
 
-const db = mysql.createConnection({
+const pool = mysql.createPool({
+  connectionLimit: 10,
+  host: '127.0.0.1',
   user: 'kyte4',
   password: '',
-  server: 'localhost',
   database: 'zstore',
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error('Ошибка соединения: ', err);
-    return;
-  }
-  console.log('Соединение с базой данных установлено');
+  connectTimeout: 10000,
+  charset: 'utf8mb4'
 });
 
 app.get('/api/products', (req, res) => {
-  const sql = 'SELECT id, name, price, quantity FROM products';
-  db.query(sql, (err, results) => {
+  pool.query('SELECT id, name, price, quantity FROM products', (err, results) => {
     if (err) {
       return res.status(500).json({ error: err });
     }
@@ -67,3 +61,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
 });
+
