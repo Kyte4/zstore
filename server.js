@@ -1,41 +1,38 @@
 const express = require('express');
-const mysql = require('mysql');
+const sql = require('mssql');
 const app = express();
 
-// Настройки базы данных
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'kyte4',
+const dbConfig = {
+  user: 'kyte',
   password: '',
+  server: 'localhost',
   database: 'zstore',
-  connectTimeout: 10000,
-  charset: 'utf8mb4'
-});
+  options: {
+    encrypt: true, // Установите в true для Azure SQL
+    enableArithAbort: true
+  }
+};
 
-// Подключение к базе данных
-db.connect((err) => {
+sql.connect(dbConfig, (err) => {
   if (err) {
-    throw err;
+    console.error('Ошибка соединения: ', err);
+    return;
   }
   console.log('Соединение с базой данных установлено');
 });
 
-// Маршрут для получения данных из базы данных
-app.get('/api/products', (req, res) => {
-  const sql = 'SELECT id, name, price FROM products';
-  db.query(sql, (err, results) => {
-    if (err) {
-      throw err;
-    }
-    res.json(results);
-  });
+app.get('/api/products', async (req, res) => {
+  try {
+    const result = await sql.query('SELECT id, name, price, quantity FROM products');
+    res.json(result.recordset);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// Путь к статическим файлам (ваш HTML, CSS, JS)
 app.use(express.static('public'));
 
-// Запуск сервера
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
 });
