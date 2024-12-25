@@ -7,7 +7,9 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'kyte4',
   password: '',
-  database: 'zstore'
+  database: 'zstore',
+  connectTimeout: 10000,
+  charset: 'utf8mb4'
 });
 
 // Подключение к базе данных
