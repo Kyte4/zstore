@@ -5,7 +5,7 @@ const app = express();
 // Настройки базы данных
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'Georgii-PC',
+  user: 'kyte4',
   password: '',
   database: 'zstore'
 });
@@ -33,7 +33,7 @@ app.get('/api/products', (req, res) => {
 app.use(express.static('public'));
 
 // Запуск сервера
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3306;
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
 });
