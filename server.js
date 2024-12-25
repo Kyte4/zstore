@@ -3,10 +3,10 @@ const sql = require('mysql');
 const app = express();
 
 const dbConfig = {
-  user: 'your_username',
-  password: 'your_password',
+  user: 'kyte4',
+  password: '',
   server: 'localhost',
-  database: 'mydatabase',
+  database: 'zstore',
   options: {
     encrypt: true, // Установите в true для Azure SQL
     enableArithAbort: true
