@@ -5,9 +5,9 @@ const app = express();
 // Настройки базы данных
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'ваш_имя_пользователя',
-  password: 'ваш_пароль',
-  database: 'ваша_база_данных'
+  user: 'Georgii-PC',
+  password: '',
+  database: 'zstore'
 });
 
 // Подключение к базе данных
