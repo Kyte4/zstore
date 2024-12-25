@@ -1,10 +1,12 @@
-const sql = require('mssql');
+const express = require('express');
+const sql = require('mysql');
+const app = express();
 
 const dbConfig = {
-  user: 'kyte',
-  password: '',
+  user: 'your_username',
+  password: 'your_password',
   server: 'localhost',
-  database: 'zstore',
+  database: 'mydatabase',
   options: {
     encrypt: true, // Установите в true для Azure SQL
     enableArithAbort: true
@@ -21,4 +23,12 @@ async function getProducts(req, res) {
   }
 }
 
+// Настройте маршруты после объявления функции getProducts
 app.get('/api/products', getProducts);
+
+app.use(express.static('public'));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Сервер запущен на порту ${PORT}`);
+});
