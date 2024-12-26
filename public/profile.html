@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль и Корзина</title>
+    <link rel="stylesheet" href="fotostyles/style.css">
+
+</head>
+<body>
+    <header>
+        <h1>Профиль и Корзина</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог товаров</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+                <li><a href="profile.html">Профиль</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="profile-section">
+        <h2>Добро пожаловать, <span id="username"></span></h2>
+        <p>Email: <span id="email"></span></p>
+        <h3>Ваша корзина:</h3>
+        <ul id="cart-items"></ul>
+        <button id="logout-btn">Выйти</button>
+    </section>
+
+<script src="js/profile.js" defer></script>
+</body>
+</html>
+

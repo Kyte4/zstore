@@ -81,3 +81,13 @@ function showNotification(message) {
         modal.style.display = "none";
     }, 2000);
 }
+
+fetch('/api/products')
+        .then(response => response.json())
+        .then(data => {
+            const productsDiv = document.getElementById('products');
+            data.forEach(product => {
+                productsDiv.innerHTML += `<p>ID: ${product.id} - Name: ${product.name} - Price: ${product.price} руб.</p>`;
+            });
+        })
+        .catch(error => console.error('Ошибка:', error));

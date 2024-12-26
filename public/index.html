@@ -32,23 +32,13 @@
 
     <nav>
         <ul>
+            <li><a href="index.html">Главная</a></li>
             <li><a href="catalog.html">Каталог товаров</a></li>
             <li><a href="about.html">О нас</a></li>
             <li><a href="contact.html">Контакты</a></li>
             <li><a href="cart.html">Корзина</a></li>
+            <li><a href="profile.html">Профиль</a></li>
         </ul>
     </nav>
-    <script>
-        fetch('/api/products')
-            .then(response => response.json())
-            .then(data => {
-                const productsDiv = document.getElementById('products');
-                data.forEach(product => {
-                    productsDiv.innerHTML += `<p>ID: ${product.id} - Name: ${product.name} - Price: ${product.price} руб.</p>`;
-                });
-            })
-            .catch(error => console.error('Ошибка:', error));
-    </script>
-
 </body>
 </html>
