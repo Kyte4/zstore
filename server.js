@@ -9,10 +9,10 @@ app.use(express.json()); // Для обработки JSON-запросов
 const dbConfig = {
   user: 'kyte',
   password: '1234',
-  server: 'localhost', // Или имя вашего сервера
+  server: 'localhost',
   database: 'zstore',
   options: {
-    encrypt: true, // Установите в true для Azure SQL
+    encrypt: true,
     trustServerCertificate: true,
     port: 52893,
     enableArithAbort: true
@@ -24,20 +24,15 @@ app.post('/api/register', async (req, res) => {
   const { username, password, email } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 8);
 
-  console.log('Полученные данные:', { username, password, email });
-
   try {
     const pool = await sql.connect(dbConfig);
-    const result = await pool.request()
+    await pool.request()
       .input('username', sql.VarChar, username)
       .input('password', sql.VarChar, hashedPassword)
       .input('email', sql.VarChar, email)
       .query('INSERT INTO users (username, password, email) VALUES (@username, @password, @email)');
-
-    console.log('Результат запроса:', result);
     res.status(201).json({ message: 'Пользователь зарегистрирован' });
   } catch (err) {
-    console.error('Ошибка регистрации:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -68,6 +63,40 @@ app.post('/api/login', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// Маршрут для получения профиля пользователя
+app.get('/api/profile', async (req, res) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Токен не предоставлен' });
+  }
+
+  jwt.verify(token, 'your_secret_key', async (err, decoded) => {
+    if (err) {
+      return res.status(500).json({ message: 'Не удалось проверить токен' });
+    }
+
+    const userId = decoded.id;
+
+    try {
+      const pool = await sql.connect(dbConfig);
+      const userResult = await pool.request()
+        .input('userId', sql.Int, userId)
+        .query('SELECT username, email FROM users WHERE id = @userId');
+      const cartResult = await pool.request()
+        .input('userId', sql.Int, userId)
+        .query('SELECT p.name, c.quantity FROM carts c JOIN products p ON c.product_id = p.id WHERE c.user_id = @userId');
+      res.json({
+        username: userResult.recordset[0].username,
+        email: userResult.recordset[0].email,
+        cart: cartResult.recordset
+      });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
 });
 
 // Маршрут для получения товаров корзины
@@ -125,13 +154,15 @@ app.post('/api/cart', async (req, res) => {
                'INSERT INTO carts (user_id, product_id, quantity) VALUES (@userId, @productId, @quantity)');
       res.status(201).json({ message: 'Товар добавлен в корзину' });
     } catch (err) {
+      console.error('Ошибка при добавлении товара в корзину:', err.message);
       res.status(500).json({ error: err.message });
     }
   });
 });
 
+
 // Маршрут для получения всех продуктов
-async function getProducts(req, res) {
+app.get('/api/products', async (req, res) => {
   try {
     const pool = await sql.connect(dbConfig);
     const result = await pool.request().query('SELECT id, name, price, quantity FROM products');
@@ -139,43 +170,30 @@ async function getProducts(req, res) {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
-
-// Маршрут для получения профиля пользователя
-app.get('/api/profile', async (req, res) => {
-  const token = req.headers['authorization'];
-
-  if (!token) {
-    return res.status(401).json({ message: 'Токен не предоставлен' });
-  }
-
-  jwt.verify(token, 'your_secret_key', async (err, decoded) => {
-    if (err) {
-      return res.status(500).json({ message: 'Не удалось проверить токен' });
-    }
-
-    const userId = decoded.id;
-
-    try {
-      const pool = await sql.connect(dbConfig);
-      const userResult = await pool.request()
-        .input('userId', sql.Int, userId)
-        .query('SELECT username, email FROM users WHERE id = @userId');
-      const cartResult = await pool.request()
-        .input('userId', sql.Int, userId)
-        .query('SELECT p.name, c.quantity FROM carts c JOIN products p ON c.product_id = p.id WHERE c.user_id = @userId');
-      res.json({
-        username: userResult.recordset[0].username,
-        email: userResult.recordset[0].email,
-        cart: cartResult.recordset
-      });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
 });
 
-app.get('/api/products', getProducts);
+// Маршрут для получения данных о продукте
+app.get('/api/product/:id', async (req, res) => {
+  const productId = req.params.id;
+
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool.request()
+      .input('productId', sql.Int, productId)
+      .query('SELECT id, name, price, description, image FROM products WHERE id = @productId');
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: 'Продукт не найден' });
+    }
+
+    res.json(result.recordset[0]);
+  } catch (err) {
+    console.error('Ошибка при получении данных о продукте:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 // Путь к статическим файлам (ваш HTML, CSS, JS)
 app.use(express.static('public'));

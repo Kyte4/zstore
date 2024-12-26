@@ -3,40 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Товар 1</title>
+    <title>Товар</title>
     <link rel="stylesheet" href="fotostyles/style.css">
-    <script src="js/scripts.js"></script>
+    <script src="js/scripts.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>ЯБЛОКО</h1>
+        <h1 id="product-name">Товар</h1>
     </header>
 
-    <img src="fotostyles/apple.png" alt="ЯБЛОКО">
-    <p>ЭЙ ЯБЛОКО.
-        @
-        ЭЙ.
-        @
-        ЭЙ ЯБЛОКО
-        @
-        ЭЙ ЯБЛОКО.
-        @
-        ЭЙ.
-        @
-        ЭЙ ЯБЛОКО
-        @
-        ЭЙ ЯБЛОКО.
-        @
-        ЭЙ.
-        @
-        ЭЙ ЯБЛОКО
-        @
-        ЧТО?!
-        @
-        НОЖ.
-        @</p>
-    <p>Цена: 1500 руб.</p>
-    <button onclick="addToCart('яблоко', 1500)">Добавить в корзину</button>
+    <img id="product-image" src="" alt="Товар">
+    <p id="product-description">Описание товара</p>
+    <p>Цена: <span id="product-price"></span></p>
+    <button id="add-to-cart-btn">Добавить в корзину</button>
 
     <div id="notification" class="modal">
         <div class="modal-content">

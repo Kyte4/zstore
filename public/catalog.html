@@ -5,16 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог товаров</title>
     <link rel="stylesheet" href="fotostyles/style.css">
-    <script src="js/scripts.js" defer></script>
 </head>
 <body>
     <header>
+        <img src="fotostyles/logo-chill.png" alt="Банан" style="width: 15%">
         <h1>Каталог товаров</h1>
-    </header>
-
-    <div class="product-list" id="product-list"></div>
-
-    <footer>
         <nav>
             <ul>
                 <li><a href="index.html">Главная</a></li>
@@ -24,49 +19,10 @@
                 <li><a href="profile.html">Профиль</a></li>
             </ul>
         </nav>
-    </footer>
+    </header>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const imageMap = {
-                'БАНАН': 'banan.png',
-                'ЯБЛОКО': 'apple.png',
-                'ПЕРЕЦ': 'per4ik.png',
-                'ЧИЛОВЫЙ ДАЦИК': 'dacik.png'
-            };
+    <div class="product-list" id="product-list"></div>
 
-            fetch('/api/products')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (!Array.isArray(data)) {
-                        throw new TypeError('Expected an array but got a different type');
-                    }
-                    const productList = document.getElementById('product-list');
-                    productList.innerHTML = ''; // Очистка контейнера перед добавлением продуктов
-
-                    data.forEach(product => {
-                        const productDiv = document.createElement('div');
-                        productDiv.classList.add('product');
-
-                        // Используем маппинг для получения правильного имени файла изображения
-                        const imageName = imageMap[product.name] || 'default.png'; // 'default.png' для неизвестных товаров
-
-                        productDiv.innerHTML = `
-                            <h2>${product.name}</h2>
-                            <img src="fotostyles/${imageName}" alt="${product.name}">
-                            <p>Цена: ${product.price} руб.</p>
-                            <a href="product${product.id}.html">Подробнее</a>
-                        `;
-                        productList.appendChild(productDiv);
-                    });
-                })
-                .catch(error => console.error('Ошибка:', error));
-        });
-    </script>
+     <script src="js/catalog.js" defer></script>
 </body>
 </html>

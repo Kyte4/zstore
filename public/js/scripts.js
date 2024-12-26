@@ -1,66 +1,104 @@
 document.addEventListener('DOMContentLoaded', () => {
-    updateCart();
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id'); // Получаем идентификатор продукта из URL
+
+    if (!productId) {
+        console.error('Идентификатор продукта не найден в URL');
+        return;
+    }
+
+    fetch(`/api/product/${productId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка при загрузке данных о продукте');
+            }
+            return response.json();
+        })
+        .then(product => {
+            const productName = document.getElementById('product-name');
+            const productPrice = document.getElementById('product-price');
+            const productImage = document.getElementById('product-image');
+            const productDescription = document.getElementById('product-description');
+
+            if (productName) productName.textContent = product.name;
+            if (productPrice) productPrice.textContent = `${product.price} руб.`;
+            if (productImage) productImage.src = `fotostyles/${product.image}`;
+            if (productDescription) productDescription.textContent = product.description;
+
+            const addToCartBtn = document.getElementById('add-to-cart-btn');
+            if (addToCartBtn) {
+                addToCartBtn.addEventListener('click', () => {
+                    addToCart(product.id, 1);
+                });
+            }
+        })
+        .catch(error => console.error('Ошибка:', error));
+
     setupNotification();
+    updateCartSummary();
 });
 
-function addToCart(productName, productPrice) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let itemIndex = cart.findIndex(item => item.name === productName);
-
-    if (itemIndex > -1) {
-        cart[itemIndex].quantity += 1;
-    } else {
-        cart.push({ name: productName, price: productPrice, quantity: 1 });
+function addToCart(productId, quantity) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Пожалуйста, войдите в систему, чтобы добавить товары в корзину.');
+        window.location.href = 'profile.html';
+        return;
     }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    showNotification(`${productName} добавлен в корзину!`);
-    updateCart();
-    updateCartSummary(); // Обновляем общую информацию о корзине после добавления товара
-}
 
-function updateCart() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let cartDiv = document.getElementById('cart');
-    if (cartDiv) {
-        cartDiv.innerHTML = '<h3>Содержимое корзины:</h3>';
-        if (cart.length === 0) {
-            cartDiv.innerHTML += '<p>Корзина пуста.</p>';
+    fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({ productId, quantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            showNotification(data.message);
+            updateCartSummary();
         } else {
-            let total = 0;
-            cart.forEach(item => {
-                cartDiv.innerHTML += `<p>${item.name} - ${item.price} руб. (x${item.quantity})</p>`;
-                total += item.price * item.quantity;
-            });
-            cartDiv.innerHTML += `<p>Итого: ${total} руб.</p>`;
-            cartDiv.innerHTML += '<button onclick="clearCart()">Очистить корзину</button>';
+            showNotification('Ошибка при добавлении товара в корзину.');
         }
-    }
+    })
+    .catch(error => console.error('Ошибка:', error));
 }
 
 function updateCartSummary() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let cartSummaryDiv = document.getElementById('cart-summary');
-    if (cartSummaryDiv) {
-        let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        let totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        cartSummaryDiv.innerHTML = `<p>Всего товаров: ${totalItems}</p>`;
-        cartSummaryDiv.innerHTML += `<p>Общая сумма: ${totalPrice} руб.</p>`;
+    const token = localStorage.getItem('token');
+    if (!token) {
+        return;
     }
-}
 
-function clearCart() {
-    localStorage.removeItem('cart');
-    updateCart();
-    updateCartSummary(); // Обновляем общую информацию о корзине после очистки
+    fetch('/api/cart', {
+        method: 'GET',
+        headers: {
+            'Authorization': token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const cartSummaryDiv = document.getElementById('cart-summary');
+        if (cartSummaryDiv) {
+            let totalItems = data.reduce((sum, item) => sum + item.quantity, 0);
+            let totalPrice = data.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            cartSummaryDiv.innerHTML = `<p>Всего товаров: ${totalItems}</p>`;
+            cartSummaryDiv.innerHTML += `<p>Общая сумма: ${totalPrice} руб.</p>`;
+        }
+    })
+    .catch(error => console.error('Ошибка:', error));
 }
 
 function setupNotification() {
     const modal = document.getElementById("notification");
     const span = document.getElementsByClassName("close")[0];
 
-    span.onclick = function() {
-        modal.style.display = "none";
+    if (span) {
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
     }
 
     window.onclick = function(event) {
@@ -74,20 +112,12 @@ function showNotification(message) {
     const modal = document.getElementById("notification");
     const notificationMessage = document.getElementById("notification-message");
 
-    notificationMessage.innerText = message;
-    modal.style.display = "block";
+    if (notificationMessage) {
+        notificationMessage.innerText = message;
+        modal.style.display = "block";
 
-    setTimeout(() => {
-        modal.style.display = "none";
-    }, 2000);
+        setTimeout(() => {
+            modal.style.display = "none";
+        }, 2000);
+    }
 }
-
-fetch('/api/products')
-        .then(response => response.json())
-        .then(data => {
-            const productsDiv = document.getElementById('products');
-            data.forEach(product => {
-                productsDiv.innerHTML += `<p>ID: ${product.id} - Name: ${product.name} - Price: ${product.price} руб.</p>`;
-            });
-        })
-        .catch(error => console.error('Ошибка:', error));
