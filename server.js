@@ -3,12 +3,14 @@ const sql = require('mssql');
 const app = express();
 
 const dbConfig = {
-  user: 'kyte4',
-  password: '',
-  server: '127.0.0.1', // Или имя вашего сервера
+  user: 'kyte',
+  password: '1234',
+  server: 'localhost', // Или имя вашего сервера
   database: 'zstore',
   options: {
     encrypt: true, // Установите в true для Azure SQL
+    trustServerCertificate: true,
+    port: 52893,
     enableArithAbort: true
   }
 };
