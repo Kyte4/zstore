@@ -1,0 +1,15 @@
+.username-display {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1em;
+  font-weight: 600;
+  margin-left: 12px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.username-display:hover {
+  background: #0056b3;
+}

@@ -1,0 +1,31 @@
+.about-page {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  font-size: 1.15em;
+  color: #222;
+}
+
+.about-page h2 {
+  color: #007bff;
+  margin-bottom: 18px;
+  font-size: 2em;
+}
+
+.about-page ul {
+  margin: 18px 0 18px 24px;
+  padding: 0;
+  list-style: disc;
+}
+
+.about-page li {
+  margin-bottom: 8px;
+  font-size: 1em;
+}
+
+.about-page p {
+  margin-bottom: 14px;
+}
