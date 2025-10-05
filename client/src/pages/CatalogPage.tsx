@@ -58,7 +58,7 @@ return (
         <div key={product.id} className="product">
           <h2>{product.name}</h2>
           <img 
-            src={product.image} 
+            src={product.image.replace(/\\/g, '/')}
             alt={product.name} 
             className="product-image"
           />

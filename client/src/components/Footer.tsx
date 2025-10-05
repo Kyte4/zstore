@@ -5,14 +5,13 @@ const Footer: React.FC = () => (
   <footer className="footer">
   <div className="footer-main">
     <div className="footer-col left">
-      <h2>ZSTORE</h2>
+      <h2>СТОР</h2>
       <p>Лучший маркетплейс товаров. Быстрая доставка, поддержка 24/7, гарантия качества.</p>
     </div>
     <div className="footer-col center">
       <div className="footer-socials">
         <a href="https://vk.com" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-vk"></i></a>
         <a href="https://t.me/kyte4" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-telegram"></i></a>
-        <a href="https://discord.com" target="_blank" rel="noopener noreferrer"><i className="fa-brands fa-discord"></i></a>
       </div>
       <img src="/assets/images/QR.png" alt="QR Telegram" className="footer-qr" />
     </div>
@@ -27,7 +26,7 @@ const Footer: React.FC = () => (
     </div>
   </div>
   <div className="footer-bottom">
-    © 2025 ZSTORE. Все права защищены.
+    © 2025 СТОР. Все права защищены.
   </div>
 </footer>
 );

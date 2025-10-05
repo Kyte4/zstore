@@ -1,73 +1,82 @@
 .login-page {
-  max-width: 400px;
+  max-width: 650px;
   margin: 48px auto;
-  padding: 32px 24px;
+  padding: 48px 40px;
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.10);
 }
 
 .login-page h2 {
-  color: #007bff;
-  margin-bottom: 28px;
-  font-size: 1.7em;
-  font-weight: 700;
   text-align: center;
+  margin-bottom: 24px;
+  color: #1976d2;
+  font-size: 2em;
+  font-weight: 700;
 }
 
-.login-page form {
-  width: 100%;
+.login-form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
-.login-page label {
-  display: block;
+.login-form-group label {
   margin-bottom: 6px;
   font-weight: 500;
-  color: #222;
 }
 
-.login-page input[type="text"],
-.login-page input[type="password"] {
+.login-input {
   width: 100%;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  margin-top: 4px;
-  margin-bottom: 18px;
   font-size: 1em;
+  background: #fffbe6;
   transition: border 0.2s;
 }
 
-.login-page input[type="text"]:focus,
-.login-page input[type="password"]:focus {
-  border: 1.5px solid #007bff;
+.login-input:focus {
+  border: 1.5px solid #1976d2;
   outline: none;
 }
 
-.login-page button[type="submit"] {
+.login-error, .login-page .error {
+  color: #e53935;
+  margin-bottom: 14px;
+  text-align: center;
+  font-size: 1em;
+}
+
+.login-submit-btn {
   width: 100%;
   padding: 12px;
   border-radius: 6px;
-  background: #007bff;
+  background: #1976d2;
   color: #fff;
   border: none;
   font-weight: 600;
   font-size: 1.1em;
   cursor: pointer;
-  transition: background 0.18s;
   margin-top: 8px;
+  transition: background 0.18s;
 }
 
-.login-page button[type="submit"]:hover {
+.login-submit-btn:hover {
   background: #0056b3;
 }
 
-.login-page .error {
-  color: #e53935;
-  margin-bottom: 14px;
+.login-toggle {
+  margin-top: 18px;
   text-align: center;
+}
+
+.login-toggle-btn {
+  color: #1976d2;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
   font-size: 1em;
+  padding: 0;
 }

@@ -20,7 +20,6 @@ const ContactPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Здесь должна быть логика отправки формы
     console.log('Форма отправлена:', formData);
     setSubmitted(true);
     setFormData({ name: '', message: '' });
@@ -32,17 +31,12 @@ const ContactPage: React.FC = () => {
   return (
     <div className="contact-page">
       <header className="contact-header">
-        <img 
-          src="/assets/images/logo-chill.png" 
-          alt="Логотип ZSTORE" 
-          className="logo-image"
-        />
         <h1>Контакты</h1>
       </header>
 
       <main className="contact-main">
         <div className="contact-info">
-          <p><strong>Адрес:</strong> имсит</p>
+          <p><strong>Адрес:</strong> Античная 2</p>
           <p><strong>Телефон:</strong> нет</p>
           <p><strong>Email:</strong> dacik1231@mail.ru</p>
         </div>
