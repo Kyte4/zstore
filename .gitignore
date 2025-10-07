@@ -1,4 +1,4 @@
 node_modules
 .github
 .env
-zstore/docker-compose.yml
+/server/app/volume/docker-compose.yml

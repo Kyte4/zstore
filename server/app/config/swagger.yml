@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  title: ZStore API
+  version: 1.0.0
+  description: Документация API для ZStore
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/register:
+    post:
+      summary: Регистрация нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+      responses:
+        200:
+          description: Успешная регистрация
+  /api/login:
+    post:
+      summary: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Успешная авторизация
+  /api/profile:
+    get:
+      summary: Получить профиль пользователя
+      security:
+       - bearerAuth: []
+      responses:
+        200:
+          description: Профиль пользователя
+  /api/cart:
+    get:
+      summary: Получить корзину пользователя
+      security:
+       - bearerAuth: []
+      responses:
+        200:
+          description: Корзина пользователя
+  /api/cart:
+    post:
+      summary: Добавить товар в корзину
+      security:
+       - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                quantity:
+                  type: integer
+      responses:
+        200:
+          description: Товар добавлен
+  /api/products:
+    get:
+      summary: Получить список всех товаров
+      responses:
+        200:
+          description: Список товаров
+  /api/product/{id}:
+    get:
+      summary: Получить данные о товаре по id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Данные о товаре
+  /api/profile/avatar-url:
+    post:
+      summary: Обновить ссылку на аватар пользователя
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                avatar_url:
+                  type: string
+      responses:
+        200:
+          description: Аватар обновлён
