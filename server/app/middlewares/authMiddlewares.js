@@ -1,3 +1,5 @@
+import {JWT_SECRET} from '../config/JWT'
+
 // Middleware для проверки токена
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;

@@ -1,5 +1,4 @@
 import { JWT_SECRET } from "../config/JWT";
-import authMiddleware from "../middlewares/authMiddlewares";
 
 export async function registerUser (req, res) {
   const { username, password, email } = req.body;
@@ -130,3 +129,20 @@ export async function getAvatar (req, res) {
     res.status(500).json({ success: false, message: 'Ошибка обновления аватара' });
   }
 }
+
+
+
+
+
+
+
+
+export default {
+  getUserProfile,
+  updateUserProfile,
+  getCartItems,
+  addToCart,
+  getAllProducts,
+  getProductById,
+  getAvatar
+};
