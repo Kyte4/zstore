@@ -24,7 +24,7 @@ const pool = new Pool({
   port: process.env.PG_PORT,
 });
 
-const JWT_SECRET = 'your_jwt_secret'; // Замените на свой секрет
+const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
 // Проверка соединения с базой данных
 pool.connect()
@@ -262,33 +262,6 @@ app.get('/api/product/:id', async (req, res) => {
   }
 });
 
-// Маршрут для Mistral AI (оставьте как есть)
-app.post('/api/mistral-chat', async (req, res) => {
-  try {
-    const { message } = req.body;
-    const response = await axios.post(
-      'https://api.mistral.ai/v1/chat/completions',
-      {
-        model: "open-mistral-7b",
-        messages: [{ role: "user", content: message }],
-        temperature: 0.7,
-        max_tokens: 500
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.MISTRAL_API_KEY}`
-        }
-      }
-    );
-    res.json({
-      reply: response.data.choices[0].message.content
-    });
-  } catch (error) {
-    console.error('Mistral API error:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Ошибка обработки запроса' });
-  }
-});
 
 // Пример тестового API
 app.get('/data', (_req, res) => {
@@ -321,6 +294,7 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 /**
  * @swagger
  * /api/profile/avatar-url:
