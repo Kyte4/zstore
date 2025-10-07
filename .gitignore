@@ -1,4 +1,4 @@
 node_modules
-github
-env
+.github
+.env
 docker-compose.yml
