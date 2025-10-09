@@ -1,4 +1,4 @@
-import {JWT_SECRET} from '../config/JWT'
+import {JWT_SECRET} from '../config/JWT.js'
 
 // Middleware для проверки токена
 function authMiddleware(req, res, next) {

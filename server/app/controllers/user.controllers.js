@@ -1,4 +1,4 @@
-import { JWT_SECRET } from "../config/JWT";
+import { JWT_SECRET } from "../config/JWT.js";
 
 export async function registerUser (req, res) {
   const { username, password, email } = req.body;

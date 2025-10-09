@@ -14,7 +14,9 @@ services:
       - "5432:5432"
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     environment:
       PG_USER: kyte
@@ -27,11 +29,7 @@ services:
       - "5000:5000"
     depends_on:
       - db
-    volumes:
-      - ./client/public/assets:/app/client/public/assets
-      - ./server:/app  # маппинг сервера из локальной папки в контейнер (укажите свой путь!)
-      - /app/node_modules # чтобы зависимости оставались внутри контейнера
-    command: npm start  # запуск nodemon
+
 
 volumes:
   pgdata:
