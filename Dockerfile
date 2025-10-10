@@ -1,21 +1,30 @@
-FROM node:20
+# Этап 1: client build
+FROM node:20 AS client-build
 
-# Сервер
-WORKDIR /server/app
-COPY server/app/package*.json ./
-RUN npm install
-COPY server/app ./
+WORKDIR /client
 
-# Клиент
-WORKDIR /server/client
 COPY server/client/package*.json ./
+
 RUN npm install
+
 COPY server/client/ ./
+
 RUN npm run build
 
-# Возвращаемся к серверу
+# Этап 2: server с build-клиентом
+
+FROM node:20 AS server
+
 WORKDIR /server/app
+
+COPY server/app/package*.json ./
+
+RUN npm install
+
+COPY server/app/ ./
+
+COPY --from=client-build /client/build ./client/build
 
 EXPOSE 5000
 
-CMD ["node", "server.js"]k
+CMD ["node", "server.js"]
