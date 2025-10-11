@@ -1,4 +1,5 @@
 import { JWT_SECRET } from "../config/JWT.js";
+import pool from "../config/dbConfig.js";
 
 export async function registerUser (req, res) {
   const { username, password, email } = req.body;

@@ -27,4 +27,8 @@ export interface Notification {
   visible: boolean;
 }
 
+export interface ApiConfig {
+  baseURL: string;
+}
+
 export type AuthMode = 'none' | 'login' | 'register';

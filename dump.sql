@@ -8,7 +8,6 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -21,6 +20,17 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
+DO
+$do$
+BEGIN
+   IF NOT EXISTS (
+      SELECT FROM pg_catalog.pg_roles
+      WHERE rolname = 'kyte') THEN
+      CREATE ROLE kyte WITH LOGIN SUPERUSER PASSWORD 'utjhubq12345';
+   END IF;
+END
+$do$;
+
 --
 -- Name: api_data; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -29,7 +39,7 @@ CREATE TABLE public.api_data (
 );
 
 
-ALTER TABLE public.api_data OWNER TO postgres;
+ALTER TABLE public.api_data OWNER TO kyte;
 
 --
 -- Name: carts; Type: TABLE; Schema: public; Owner: postgres
@@ -43,7 +53,7 @@ CREATE TABLE public.carts (
 );
 
 
-ALTER TABLE public.carts OWNER TO postgres;
+ALTER TABLE public.carts OWNER TO kyte;
 
 --
 -- Name: carts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -58,7 +68,7 @@ CREATE SEQUENCE public.carts_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.carts_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.carts_id_seq OWNER TO kyte;
 
 --
 -- Name: carts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -81,7 +91,7 @@ CREATE TABLE public.products (
 );
 
 
-ALTER TABLE public.products OWNER TO postgres;
+ALTER TABLE public.products OWNER TO kyte;
 
 --
 -- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -96,7 +106,7 @@ CREATE SEQUENCE public.products_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.products_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.products_id_seq OWNER TO kyte;
 
 --
 -- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -118,7 +128,7 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO postgres;
+ALTER TABLE public.users OWNER TO kyte;
 
 --
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -133,7 +143,7 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.users_id_seq OWNER TO kyte;
 
 --
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres

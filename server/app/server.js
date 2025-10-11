@@ -21,6 +21,7 @@ const swaggerDocument = yaml.load(fs.readFileSync(swaggerPath, 'utf8'));
 app.use(cors());
 app.use("/api", userRoutes);
 app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true }));
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Сначала раздача картинок

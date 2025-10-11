@@ -1,6 +1,4 @@
-interface ApiConfig {
-  baseURL: string;
-}
+import { Product, ApiConfig } from "../types/types";
 
 const config: ApiConfig = {
   baseURL: process.env.REACT_APP_API_URL || '/api'
