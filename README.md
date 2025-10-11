@@ -25,39 +25,40 @@
 ---
 
 ## 📂 Структура проекта
+
 zstore/
+├── server/                 # Backend
+│   ├── app/
+│   │   ├── config/         # Конфиги (JWT, DB, ENV, Swagger)
+│   │   ├── controllers/    # Логика обработки запросов
+│   │   ├── middlewares/    # JWT и обработка ошибок
+│   │   └── routes/         # Определения маршрутов (user.routes.js)
+│   │
+│   ├── services/           # Сервисы и бизнес-логика
+│   ├── scripts/            # Вспомогательные скрипты
+│   ├── server.js           # Точка входа Express
+│   └── .env                # Переменные окружения
 │
-├── server/ # Backend
-│ ├── app/
-│ │ ├── config/ # Конфиги (JWT, DB, ENV, Swagger)
-│ │ ├── controllers/ # Логика обработки запросов
-│ │ ├── middlewares/ # JWT и обработка ошибок
-│ │ └── routes/ # Определения маршрутов (user.routes.js)
-│ │
-│ ├── services/ # Сервисы и бизнес-логика
-│ ├── scripts/ # Вспомогательные скрипты
-│ ├── server.js # Точка входа Express
-│ └── .env # Переменные окружения
+├── client/                 # Frontend
+│   ├── src/
+│   │   ├── components/     # UI компоненты (Header, Footer)
+│   │   ├── pages/          # Основные страницы
+│   │   │   ├── HomePage.tsx
+│   │   │   ├── CatalogPage.tsx
+│   │   │   ├── ProductPage.tsx
+│   │   │   ├── LoginPage.tsx
+│   │   │   ├── ProfilePage.tsx
+│   │   │   └── ContactPage.tsx
+│   │   ├── services/       # Взаимодействие с API
+│   │   ├── store/          # Хранилище состояния
+│   │   ├── types/          # Общие интерфейсы и типы
+│   │   ├── styles/         # Стили
+│   │   └── utils/          # Вспомогательные функции
+│   └── public/             # Статические файлы
 │
-├── client/ # Frontend
-│ ├── src/
-│ │ ├── components/ # UI компоненты (Header, Footer)
-│ │ ├── pages/ # Основные страницы
-│ │ │ ├── HomePage.tsx
-│ │ │ ├── CatalogPage.tsx
-│ │ │ ├── ProductPage.tsx
-│ │ │ ├── LoginPage.tsx
-│ │ │ └── ProfilePage.tsx
-│ │ ├── services/ # Взаимодействие с API
-│ │ ├── store/ # Хранилище состояния
-│ │ ├── types/ # Общие интерфейсы и типы
-│ │ ├── styles/ # Стили
-│ │ └── utils/ # Вспомогательные функции
-│ └── public/ # Статические файлы
-│
-├── docker-compose.yml # Конфигурация docker-compose
-├── Dockerfile # Dockerfile для контейнера
-├── dump.sql # SQL-дамп базы данных
+├── docker-compose.yml       # Конфигурация docker-compose
+├── Dockerfile               # Dockerfile для контейнера
+├── dump.sql                 # SQL-дамп базы данных
 └── README.md
 
 **🔒 API Endpoints**
