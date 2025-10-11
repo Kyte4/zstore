@@ -62,21 +62,21 @@
 └── README.md
 </pre>
 
+## 🔒 API Endpoints
 
-**🔒 ##API Endpoints**
 **![🔒 API Endpoints](image.png)**
 
-🧱 **##Архитектура**
+## 🧱 Архитектура
 
 **Проект построен по принципам:**
 
-**MVC (Model-View-Controller) для backend-части**
+**MVC (Model-View-Controller)** —  для backend-части
 
-**Feature-based structure для frontend-части**
+**Feature-based structure** — для frontend-части
 
-**Разделение ответственности по слоям (controllers, services, routes, middlewares)**
+**Разделение ответственности по слоям** — (controllers, services, routes, middlewares)**
 
-👤 **##Автор**
+## 👤 Автор
 
 **Kyte4**
 **🔗 GitHub: Kyte4**
