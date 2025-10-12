@@ -12,19 +12,21 @@ const HomePage: React.FC = () => {
       <main className="main-content">
         <section className="hero">
           <div className="hero-text">
-            <h2>Добро пожаловать в СТОР</h2>
+            <h2>Добро пожаловать в ZСТОР</h2>
             <p>Лучшие товары по самым выгодным ценам</p>
             <button className="cta-button" onClick={() => navigate('/catalog')}>
               Перейти в каталог
             </button>
           </div>
-          {/* <div className="hero-image">
-            <img 
-              src="/assets/images/daciksmall.png" 
-              alt="Чиловый Дацик" 
-              className="featured-product" 
-            />
-          </div> */}
+          {
+            <div className="hero-image">
+              <img
+                src="/assets/images/daciksmall.png"
+                alt="Чиловый Дацик"
+                className="featured-product"
+              />
+            </div>
+          }
         </section>
 
         <section className="features">
