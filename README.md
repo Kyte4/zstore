@@ -78,5 +78,6 @@
 
 ## 👤 Автор
 
-**Kyte4**
-**🔗 GitHub: Kyte4**
+- **Kyte4**
+- **🔗 GitHub: [Kyte4](https://github.com/Kyte4)**
+- **📨 Telegramm: https://t.me/kyte4**
