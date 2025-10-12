@@ -8,6 +8,7 @@
 ## 📦 Технологии
 
 ### Backend (`/app`)
+
 - **Node.js**, **Express.js**
 - **JWT** — аутентификация и авторизация
 - **dotenv** — управление переменными окружения
@@ -16,6 +17,7 @@
 - **Docker / docker-compose** — контейнеризация
 
 ### Frontend (`/client`)
+
 - **React + TypeScript**
 - **React Router** — маршрутизация
 - **Axios** — взаимодействие с API
@@ -56,6 +58,9 @@
 │   │   └── utils/         # Вспомогательные функции
 │   └── public/            # Статические файлы
 │
+├── .gitignore
+├── package-lock.json       # Eslint+prettier
+├── package.json            # Eslint+prettier
 ├── docker-compose.yml      # Конфигурация docker-compose
 ├── Dockerfile              # Dockerfile для контейнера
 ├── dump.sql                # SQL-дамп базы данных
@@ -70,11 +75,11 @@
 
 **Проект построен по принципам:**
 
-**MVC (Model-View-Controller)** —  для backend-части
+**MVC (Model-View-Controller)** — для backend-части
 
 **Feature-based structure** — для frontend-части
 
-**Разделение ответственности по слоям** — (controllers, services, routes, middlewares)**
+**Разделение ответственности по слоям** — (controllers, services, routes, middlewares)\*\*
 
 ## 👤 Автор
 
