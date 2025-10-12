@@ -18,8 +18,8 @@ export interface Product {
   name: string;
   price: number;
   quantity: number;
-  description?: string;
-  image?: string;
+  description: string;
+  image: string;
 }
 
 export interface Notification {
