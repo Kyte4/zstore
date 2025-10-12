@@ -18,7 +18,7 @@ const ProductPage: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`/api/product/${id}`);
+        const response = await fetch(`/api/products/${id}`);
         if (!response.ok) {
           throw new Error('Товар не найден');
         }

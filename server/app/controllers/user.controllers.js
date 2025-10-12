@@ -1,5 +1,9 @@
-import { JWT_SECRET } from '../config/JWT.js';
+import { JWT_SECRET, jwt } from '../config/JWT.js';
 import pool from '../config/dbConfig.js';
+import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export async function registerUser(req, res) {
   const { username, password, email } = req.body;
@@ -11,9 +15,11 @@ export async function registerUser(req, res) {
     );
     res.json({ success: true, user: result.rows[0] });
   } catch (err) {
-    res
-      .status(400)
-      .json({ success: false, message: 'Пользователь уже существует или ошибка данных' });
+    if (err.code === '23505') {
+      res.status(400).json({ success: false, message: 'Пользователь уже существует' });
+    } else {
+      res.status(400).json({ success: false, message: 'Ошибка данных: ' + err.message });
+    }
   }
 }
 
@@ -34,6 +40,7 @@ export async function loginUser(req, res) {
     });
     res.json({ success: true, token });
   } catch (err) {
+    console.error('Ошибка логина:', err);
     res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
 }
