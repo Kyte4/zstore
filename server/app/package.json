@@ -1,6 +1,9 @@
 {
   "type": "module",
   "scripts": {
+    "lint": "eslint \"src/**/*.{js,ts}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,ts}\"",
+    "format": "prettier --write \"src/**/*.{js,ts}\"",
     "start": "nodemon dist/server.js",
     "build": "react-scripts build"
   },
@@ -26,10 +29,16 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "express": "^4.21.2",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.14.1",
+    "prettier": "^3.6.2",
+    "prettier-eslint": "^16.4.2",
+    "prettier-eslint-cli": "^8.0.1",
     "react-router-dom": "^7.6.2",
     "react-scripts": "^5.0.1",
     "swagger-jsdoc": "^6.2.8",

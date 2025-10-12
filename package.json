@@ -1,0 +1,17 @@
+{
+  "name": "zstore",
+  "private": true,
+  "scripts": {
+    "format": "npm run format --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "dependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.6.2",
+    "prettier-eslint-cli": "^8.0.1"
+  }
+}

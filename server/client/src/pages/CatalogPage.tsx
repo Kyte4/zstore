@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/catalog.css'; 
+import '../styles/catalog.css';
 import type { Product } from '../types/types';
 
 const CatalogPage: React.FC = () => {
@@ -9,18 +9,17 @@ const CatalogPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch('/api/products');
-        
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
 
         const data = await response.json();
-        
+
         if (!Array.isArray(data)) {
           throw new TypeError('Expected an array but got a different type');
         }
@@ -50,30 +49,26 @@ const CatalogPage: React.FC = () => {
     return <div className="error">Ошибка: {error}</div>;
   }
 
-return (
-  <div className="catalog">
-    <h1 className='catalog-title'>Каталог товаров</h1>
-    <div id="product-list" className="product-list">
-      {products.map((product) => (
-        <div key={product.id} className="product">
-          <h2>{product.name}</h2>
-          <img 
-            src={product.image.replace(/\\/g, '/')}
-            alt={product.name} 
-            className="product-image"
-          />
-          <p>Цена: {product.price} руб.</p>
-          <button 
-            onClick={() => handleProductClick(product.id)}
-            className="details-button"
-          >
-            Подробнее
-          </button>
-        </div>
-      ))}
+  return (
+    <div className="catalog">
+      <h1 className="catalog-title">Каталог товаров</h1>
+      <div id="product-list" className="product-list">
+        {products.map((product) => (
+          <div key={product.id} className="product">
+            <h2>{product.name}</h2>
+            <img
+              src={product.image.replace(/\\/g, '/')}
+              alt={product.name}
+              className="product-image"
+            />
+            <p>Цена: {product.price} руб.</p>
+            <button onClick={() => handleProductClick(product.id)} className="details-button">
+              Подробнее
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
-
-}
+  );
+};
 export default CatalogPage;

@@ -11,8 +11,9 @@ const pool = new Pool({
 });
 
 // Проверка соединения с базой данных
-pool.connect()
+pool
+  .connect()
   .then(() => console.log('Подключение к базе данных успешно'))
-  .catch(err => console.error('Ошибка подключения к базе данных:', err));
+  .catch((err) => console.error('Ошибка подключения к базе данных:', err));
 
 export default pool;

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -37,6 +37,31 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./server/app:/server/app
+      - ./server/client:/server/client
+
+  formatter:
+    image: node:20
+    working_dir: /workspace
+    volumes:
+      - ./server/app:/workspace/server/app
+      - ./server/client:/workspace/server/client
+    command: >
+      sh -c "
+      npm install -g prettier eslint prettier-eslint-cli &&
+      echo '🔧 Formatting server code...' &&
+      prettier --write 'server/app/**/*.{js,jsx,ts,tsx,json,md}' &&
+      eslint --fix 'server/app/**/*.{js,jsx,ts,tsx}' || true &&
+      echo '🎨 Formatting client code...' &&
+      prettier --write 'server/client/**/*.{js,jsx,ts,tsx,json,md}' &&
+      eslint --fix 'server/client/**/*.{js,jsx,ts,tsx}' || true &&
+      echo '✅ Formatting complete!'
+      "
+    profiles: ["dev"]
+    # профили позволяют не запускать этот сервис вместе с app
+    # он запускается вручную командой:
+    # docker compose run --rm formatter
 
 volumes:
   pgdata:

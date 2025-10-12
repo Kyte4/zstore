@@ -11,7 +11,7 @@ import LoginPage from './pages/LoginPage.tsx';
 import './styles/index.css'; // Импортируем стили
 import './styles/catalog.css'; // Стили для каталога
 import './styles/product.css'; // Стили для страницы товара
-import './styles/home.css'; // Стили для главной страницы 
+import './styles/home.css'; // Стили для главной страницы
 import './styles/contact.css'; // Стили для страницы контактов
 import './styles/profile.css'; // Стили для страницы профиля
 import './styles/about.css'; // Стили для страницы "О нас"

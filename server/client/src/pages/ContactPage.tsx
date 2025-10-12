@@ -6,15 +6,15 @@ const ContactPage: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
-    message: ''
+    message: '',
   });
   const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -36,9 +36,15 @@ const ContactPage: React.FC = () => {
 
       <main className="contact-main">
         <div className="contact-info">
-          <p><strong>Адрес:</strong> Античная 2</p>
-          <p><strong>Телефон:</strong> нет</p>
-          <p><strong>Email:</strong> dacik1231@mail.ru</p>
+          <p>
+            <strong>Адрес:</strong> Античная 2
+          </p>
+          <p>
+            <strong>Телефон:</strong> нет
+          </p>
+          <p>
+            <strong>Email:</strong> dacik1231@mail.ru
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="contact-form">
@@ -72,9 +78,7 @@ const ContactPage: React.FC = () => {
           </button>
 
           {submitted && (
-            <div className="success-message">
-              Сообщение отправлено! Спасибо за обратную связь.
-            </div>
+            <div className="success-message">Сообщение отправлено! Спасибо за обратную связь.</div>
           )}
         </form>
       </main>

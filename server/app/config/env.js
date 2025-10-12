@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import { JWT_SECRET } from './JWT.js';
 
 dotenv.config();

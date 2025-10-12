@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/login.css'; // Импортируем стили для страницы входа 
+import '../styles/login.css'; // Импортируем стили для страницы входа
 
 const LoginPage: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
           <input
             type="text"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
             required
             className="login-input"
           />
@@ -76,7 +76,7 @@ const LoginPage: React.FC = () => {
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className="login-input"
             />
@@ -87,7 +87,7 @@ const LoginPage: React.FC = () => {
           <input
             type="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             className="login-input"
           />

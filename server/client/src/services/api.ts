@@ -1,7 +1,7 @@
-import { Product, ApiConfig } from "../types/types";
+import { Product, ApiConfig } from '../types/types';
 
 const config: ApiConfig = {
-  baseURL: process.env.REACT_APP_API_URL || '/api'
+  baseURL: process.env.REACT_APP_API_URL || '/api',
 };
 
 export const fetchProducts = async (): Promise<Product[]> => {

@@ -1,7 +1,7 @@
 // src/pages/HomePage.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/home.css'; 
+import '../styles/home.css';
 import '../styles/footer.css';
 
 const HomePage: React.FC = () => {
@@ -9,16 +9,12 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-container">
-
       <main className="main-content">
         <section className="hero">
           <div className="hero-text">
-            <h2>Добро пожаловать в СТОР</h2>  
+            <h2>Добро пожаловать в СТОР</h2>
             <p>Лучшие товары по самым выгодным ценам</p>
-            <button 
-              className="cta-button" 
-              onClick={() => navigate('/catalog')}
-            >
+            <button className="cta-button" onClick={() => navigate('/catalog')}>
               Перейти в каталог
             </button>
           </div>
@@ -46,7 +42,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
       </main>
-
     </div>
   );
 };
