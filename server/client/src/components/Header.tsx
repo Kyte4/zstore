@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo-container">
-        <h1 style={{ color: '#007bff', marginLeft: 8 }}>СТОР</h1>
+        <h1 style={{ color: '#007bff', marginLeft: 8 }}>ZСТОР</h1>
       </div>
       <nav className="nav">
         <button className="nav-link" onClick={() => navigate('/')}>

@@ -5,7 +5,7 @@ const Footer: React.FC = () => (
   <footer className="footer">
     <div className="footer-main">
       <div className="footer-col left">
-        <h2>СТОР</h2>
+        <h2>ZСТОР</h2>
         <p>Лучший маркетплейс товаров. Быстрая доставка, поддержка 24/7, гарантия качества.</p>
       </div>
       <div className="footer-col center">
