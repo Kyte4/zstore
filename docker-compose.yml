@@ -58,7 +58,26 @@ services:
     profiles: ["dev"]
     # профили позволяют не запускать этот сервис вместе с app
     # он запускается вручную командой:
-    # docker compose run --rm formatter
+    # docker-compose run --rm formatter
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PG_USER: kyte
+      PG_PASSWORD: utjhubq12345
+      PG_DB: zstore
+      PG_HOST: db
+      PG_PORT: 5432
+      NODE_ENV: test
+    depends_on:
+      db:
+        condition: service_healthy
+    command: npm test
+    working_dir: /app/server/app
+    volumes:
+      - ./server/app:/app/server/app
+
 
 volumes:
   pgdata:

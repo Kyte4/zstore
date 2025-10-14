@@ -10,10 +10,15 @@ const pool = new Pool({
   port: process.env.PG_PORT,
 });
 
-// Проверка соединения с базой данных
-pool
-  .connect()
-  .then(() => console.log('Подключение к базе данных успешно'))
-  .catch((err) => console.error('Ошибка подключения к базе данных:', err));
+// Проверка подключения (без зависания соединения)
+(async () => {
+  try {
+    const client = await pool.connect();
+    console.log('Подключение к базе данных успешно');
+    client.release(); // 🔥 Обязательно освобождаем клиента
+  } catch (err) {
+    console.error('Ошибка подключения к базе данных:', err);
+  }
+})();
 
 export default pool;

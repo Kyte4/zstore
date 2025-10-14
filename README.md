@@ -81,7 +81,7 @@
 
 **Feature-based structure** — для frontend-части
 
-**Разделение ответственности по слоям** — (controllers, services, routes, middlewares)\*\*
+**Разделение ответственности по слоям** — (controllers, services, routes, middlewares)
 
 ## 👤 Автор
 
