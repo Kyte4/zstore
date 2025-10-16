@@ -42,6 +42,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: Wait for Postgres to be ready
+        run: until pg_isready -h localhost -p 5432 -U kyte; do echo "Waiting for Postgres..."; sleep 2; done
+
       - name: Install dependencies and run tests
         run: |
           cd server/app
