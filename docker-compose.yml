@@ -5,9 +5,9 @@ services:
     image: postgres:15
     restart: always
     environment:
-      PG_DB: zstore
-      PG_USER: kyte
-      PG_PASSWORD: utjhubq12345
+      POSTGRES_USER: kyte
+      POSTGRES_PASSWORD: utjhubq12345
+      POSTGRES_DB: zstore
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
@@ -15,7 +15,7 @@ services:
       - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U kyte -d zstore"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
