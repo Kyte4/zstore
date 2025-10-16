@@ -59,6 +59,12 @@ jobs:
             sleep 2
           done
 
+      - name: Create database tables from dump
+        env:
+          PGPASSWORD: utjhubq12345
+        run: |
+          psql -h localhost -U kyte -d zstore -f dump.sql
+           
       - name: Install dependencies and run tests
         run: |
           cd server/app
