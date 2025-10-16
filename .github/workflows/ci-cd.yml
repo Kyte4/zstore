@@ -73,7 +73,7 @@ jobs:
           npm ci
           npm test
 
-  deploy:  # ← ОТСТУП! Этот job должен быть на том же уровне, что и test
+  deploy:
     runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/main'
@@ -100,12 +100,11 @@ jobs:
             
             cd ~/zstore
             
-            echo "🔧 Checking and fixing docker-compose..."
-            # Убедимся что docker-compose.yml имеет правильные настройки
-            if ! grep -q "POSTGRES_PASSWORD" docker-compose.yml; then
-              echo "⚠️  Fixing missing POSTGRES_PASSWORD in docker-compose.yml"
-              # Здесь можно добавить автоматическое исправление файла
-            fi
+            echo "🔧 Creating .env file with JWT_SECRET..."
+            # Создаем .env файл с JWT_SECRET
+            cat > .env << EOF
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            EOF
             
             echo "🧱 Stopping old containers..."
             docker-compose down || true
