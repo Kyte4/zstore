@@ -14,25 +14,26 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          PG_USER: kyte
-          PG_PASSWORD: utjhubq12345
-          PG_DB: zstore
+          POSTGRES_USER: kyte
+          POSTGRES_PASSWORD: utjhubq12345
+          POSTGRES_DB: zstore
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U kyte -d zstore"
-          --health-interval 5s
-          --health-timeout 3s
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
 
     env:
       PG_USER: kyte
       PG_PASSWORD: utjhubq12345
       PG_DB: zstore
-      PG_HOST: db
+      PG_HOST: localhost
       PG_PORT: 5432
       NODE_ENV: test
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -42,8 +43,21 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
       - name: Wait for Postgres to be ready
-        run: until pg_isready -h localhost -p 5432 -U kyte; do echo "Waiting for Postgres..."; sleep 2; done
+        env:
+          PGPASSWORD: utjhubq12345
+        run: |
+          for i in {1..30}; do
+            if pg_isready -h localhost -p 5432 -U kyte -d zstore; then
+              echo "✅ PostgreSQL is ready!"
+              break
+            fi
+            echo "⏳ Waiting for PostgreSQL... Attempt $i"
+            sleep 2
+          done
 
       - name: Install dependencies and run tests
         run: |
@@ -66,21 +80,18 @@ jobs:
           script_stop: true
           script: |
             set -e
-
             echo "🚀 Starting deployment on VPS..."
-
-            # Клонировать проект, если он ещё не существует
+            
             if [ ! -d "~/zstore" ]; then
               git clone https://github.com/${{ github.repository }} ~/zstore
             fi
-
+            
             cd ~/zstore
-
             echo "📦 Pulling latest code..."
             git pull origin main
-
+            
             echo "🧱 Building Docker containers..."
             docker-compose down
             docker-compose up -d --build
-
+            
             echo "✅ Deployment completed successfully!"
