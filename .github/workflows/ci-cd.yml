@@ -104,7 +104,7 @@ jobs:
             # Создаем .env файл с JWT_SECRET из GitHub Secrets
             cat > .env << EOF
             JWT_SECRET=${{ secrets.JWT_SECRET }}
-            PG_HOST=localhost
+            PG_HOST=127.0.0.1
             PG_USER=kyte
             PG_PASSWORD=utjhubq12345
             PG_DB=zstore
