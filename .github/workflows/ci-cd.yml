@@ -64,7 +64,7 @@ jobs:
           PGPASSWORD: utjhubq12345
         run: |
           psql -h localhost -U kyte -d zstore -f dump.sql
-           
+
       - name: Install dependencies and run tests
         run: |
           cd server/app
@@ -80,9 +80,9 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script_stop: true
           script: |
             set -e
