@@ -100,10 +100,11 @@ jobs:
             
             cd ~/zstore
             
-            echo "🔧 Creating .env file with JWT_SECRET..."
-            # Создаем .env файл с JWT_SECRET из GitHub Secrets
+            echo "🔧 Generating JWT_SECRET..."
+            # Генерируем случайный JWT_SECRET
+            JWT_SECRET=$(openssl rand -base64 32)
             cat > .env << EOF
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            JWT_SECRET=$JWT_SECRET
             PG_HOST=127.0.0.1
             PG_USER=kyte
             PG_PASSWORD=utjhubq12345
