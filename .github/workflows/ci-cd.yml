@@ -59,11 +59,13 @@ jobs:
             sleep 2
           done
 
-      - name: Create database tables from dump
+      - name: Load database schema from dump.sql
         env:
           PGPASSWORD: utjhubq12345
         run: |
+          echo "🗃️ Loading database schema from dump.sql..."
           psql -h localhost -U kyte -d zstore -f dump.sql
+          echo "✅ Database schema loaded successfully!"
 
       - name: Install dependencies and run tests
         run: |
@@ -72,38 +74,38 @@ jobs:
           npm test
 
   deploy:
-  runs-on: ubuntu-latest
-  needs: test
-  if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
 
-  steps:
-    - name: Deploy to VPS
-      uses: appleboy/ssh-action@v1.2.0
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: ${{ secrets.VPS_PORT }}
-        script_stop: true
-        script: |
-          set -e
-          echo "🚀 Starting deployment on VPS..."
-          
-          # Переходим в директорию или клонируем если не существует
-          if [ ! -d "~/zstore" ]; then
-            echo "📦 Cloning repository for the first time..."
-            git clone https://github.com/${{ github.repository }} ~/zstore
-            cd ~/zstore
-          else
-            echo "📦 Updating existing repository..."
-            cd ~/zstore
-            git fetch --all
-            git reset --hard origin/main
-            git pull origin main
-          fi
-          
-          echo "🧱 Building Docker containers..."
-          docker-compose down
-          docker-compose up -d --build
-          
-          echo "✅ Deployment completed successfully!"
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script_stop: true
+          script: |
+            set -e
+            echo "🚀 Starting deployment on VPS..."
+            
+            # Переходим в директорию или клонируем если не существует
+            if [ ! -d "~/zstore" ]; then
+              echo "📦 Cloning repository for the first time..."
+              git clone https://github.com/${{ github.repository }} ~/zstore
+              cd ~/zstore
+            else
+              echo "📦 Updating existing repository..."
+              cd ~/zstore
+              git fetch --all
+              git reset --hard origin/main
+              git pull origin main
+            fi
+            
+            echo "🧱 Building Docker containers..."
+            docker-compose down
+            docker-compose up -d --build
+            
+            echo "✅ Deployment completed successfully!"
