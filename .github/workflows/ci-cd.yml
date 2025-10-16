@@ -110,6 +110,7 @@ jobs:
             PG_PASSWORD=utjhubq12345
             PG_DB=zstore
             PG_PORT=5432
+            PORT=5000
             NODE_ENV=production
             EOF
             
