@@ -5,9 +5,9 @@ services:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_DB: zstore
-      POSTGRES_USER: kyte
-      POSTGRES_PASSWORD: utjhubq12345
+      PG_DB: zstore
+      PG_USER: kyte
+      PG_PASSWORD: utjhubq12345
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
