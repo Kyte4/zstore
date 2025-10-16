@@ -92,17 +92,13 @@ jobs:
             echo "🚀 Starting deployment on VPS..."
             
             # Переходим в директорию или клонируем если не существует
-            if [ ! -d "~/zstore" ]; then
-              echo "📦 Cloning repository for the first time..."
-              git clone https://github.com/${{ github.repository }} ~/zstore
-              cd ~/zstore
-            else
-              echo "📦 Updating existing repository..."
-              cd ~/zstore
-              git fetch --all
-              git reset --hard origin/main
-              git pull origin main
-            fi
+            echo "🗑️ Cleaning up old deployment..."
+            rm -rf ~/zstore
+
+            echo "📦 Cloning fresh repository..."
+            git clone https://github.com/${{ github.repository }} ~/zstore
+
+            cd ~/zstore
             
             echo "🧱 Building Docker containers..."
             docker-compose down
