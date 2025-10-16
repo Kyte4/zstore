@@ -1,5 +1,4 @@
 node_modules
-.github
 .env
 docker-compose.yml
 .vscode
