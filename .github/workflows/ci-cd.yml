@@ -20,17 +20,17 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U kyte -d zstore -f dump.sql"
+          --health-cmd "pg_isready -U kyte -d zstore"
           --health-interval 5s
           --health-timeout 3s
           --health-retries 5
 
     env:
-      PG_USER: ${{ secrets.PG_USER }}
-      PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-      PG_DB: ${{ secrets.PG_DB }}
-      PG_HOST: ${{ secrets.PG_HOST }}
-      PG_PORT: ${{ secrets.PG_PORT }}
+      PG_USER: kyte
+      PG_PASSWORD: utjhubq12345
+      PG_DB: zstore
+      PG_HOST: db
+      PG_PORT: 5432
       NODE_ENV: test
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
