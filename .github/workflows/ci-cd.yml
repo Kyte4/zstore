@@ -14,13 +14,13 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: kyte
-          POSTGRES_PASSWORD: utjhubq12345
-          POSTGRES_DB: zstore
+          POSTGRES_USER: ${{ secrets.PG_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.PG_DB }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U kyte -d zstore"
+          --health-cmd "pg_isready -U kyte -d zstore -f dump.sql"
           --health-interval 5s
           --health-timeout 3s
           --health-retries 5
