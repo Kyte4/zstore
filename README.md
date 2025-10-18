@@ -1,9 +1,17 @@
 # 🛒 ZStore
 
+
 ## https://zstore.site/
 
 **ZStore** — это полнофункциональное веб-приложение интернет-магазина, созданное на **Node.js (Express)** и **React (TypeScript)**.  
 Проект реализует базовую архитектуру клиент-серверного приложения с REST API, авторизацией JWT и модульной структурой.
+
+---
+
+[![CI/CD](https://github.com/Kyte4/zstore/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Kyte4/zstore/actions)
+[![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker)](https://www.docker.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-green?logo=node.js)](https://nodejs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?logo=postgresql)](https://www.postgresql.org/)
 
 ---
 
@@ -26,6 +34,12 @@
 - **CSS Modules / Custom Styles**
 - **Hooks / Context API (store)** — управление состоянием
 
+### CI-CD\Tests
+
+- **CI/CD** — GitHub Actions + SSH Deploy
+- **Testing** — Jest
+
+
 ---
 
 ## 📂 Структура проекта
@@ -33,15 +47,17 @@
 <pre>
 📦 zstore
 ├── server/                # Backend
-│   ├── app/
-│   │   ├── config/        # Конфиги (JWT, DB, ENV, Swagger)
-│   │   ├── controllers/   # Логика обработки запросов
-│   │   ├── middlewares/   # JWT и обработка ошибок
-│   │   └── routes/        # Определения маршрутов (user.routes.js)
-│   ├── services/          # Сервисы и бизнес-логика
-│   ├── scripts/           # Вспомогательные скрипты
-│   ├── server.js          # Точка входа Express
-│   └── .env               # Переменные окружения
+│   └── app/
+│       ├── config/            # Конфиги (JWT, DB, ENV, Swagger)
+│       ├── controllers/       # Логика обработки запросов
+│       ├── middlewares/       # JWT и обработка ошибок
+│       ├── routes/            # Определения маршрутов (user.routes.js)
+│       ├── services/          # Сервисы и бизнес-логика
+│       ├── test/              # Тесты
+│       ├── server.js          # Точка входа Express
+│       ├── app.js             # Основное приложение Express
+│       └── .env               # Переменные окружения
+│ 
 │
 ├── client/                # Frontend
 │   ├── src/
