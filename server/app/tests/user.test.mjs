@@ -1,10 +1,5 @@
 import request from 'supertest';
 import app from '../app.js';
-import pool from '../config/dbConfig.js';
-
-afterAll(async () => {
-  await pool.end();
-});
 
 let token; // хранит токен для защищённых запросов
 

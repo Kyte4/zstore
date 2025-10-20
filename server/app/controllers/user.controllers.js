@@ -1,7 +1,9 @@
 import { JWT_SECRET, jwt } from '../config/JWT.js';
-import pool from '../config/dbConfig.js';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import models from '../models/user.models.js';
+
+const { User, Product, Cart } = models;
 
 dotenv.config();
 
@@ -9,11 +11,8 @@ export async function registerUser(req, res) {
   const { username, password, email } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const result = await pool.query(
-      'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING id, username, email',
-      [username, hashedPassword, email],
-    );
-    res.json({ success: true, user: result.rows[0] });
+    const user = await User.create({ username, password: hashedPassword, email });
+    res.json({ success: true, user });
   } catch (err) {
     if (err.code === '23505') {
       res.status(400).json({ success: false, message: 'Пользователь уже существует' });
@@ -26,8 +25,7 @@ export async function registerUser(req, res) {
 export async function loginUser(req, res) {
   const { username, password } = req.body;
   try {
-    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
-    const user = result.rows[0];
+    const user = await User.findOne({ where: { username } });
     if (!user)
       return res.status(401).json({ success: false, message: 'Неверный логин или пароль' });
 
@@ -47,11 +45,9 @@ export async function loginUser(req, res) {
 
 export async function getUserProfile(req, res) {
   try {
-    const userResult = await pool.query(
-      'SELECT id, username, email, avatar_url FROM users WHERE id = $1',
-      [req.user.id],
-    );
-    res.json({ success: true, user: userResult.rows[0] });
+    const user = await User.findByPk(req.user.id);
+    if (!user) return res.status(404).json({ success: false, message: 'Пользователь не найден' });
+    res.json({ success: true, user });
   } catch {
     res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
@@ -60,11 +56,15 @@ export async function getUserProfile(req, res) {
 export async function updateUserProfile(req, res) {
   try {
     const { username, email, avatar_url } = req.body;
-    const result = await pool.query(
-      'UPDATE users SET username = $1, email = $2, avatar_url = $3 WHERE id = $4 RETURNING id, username, email, avatar_url',
-      [username, email, avatar_url, req.user.id],
-    );
-    res.json({ success: true, user: result.rows[0] });
+    const user = await User.findByPk(req.user.id);
+    if (!user) return res.status(404).json({ success: false, message: 'Пользователь не найден' });
+
+    user.username = username;
+    user.email = email;
+    user.avatar_url = avatar_url;
+    await user.save();
+
+    res.json({ success: true, user });
   } catch {
     res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
@@ -72,19 +72,11 @@ export async function updateUserProfile(req, res) {
 
 export async function getCartItems(req, res) {
   try {
-    const cartResult = await pool.query(
-      `SELECT 
-         c.product_id AS id, 
-         p.name, 
-         p.price, 
-         p.image, 
-         c.quantity 
-       FROM carts c
-       JOIN products p ON c.product_id = p.id
-       WHERE c.user_id = $1`,
-      [req.user.id],
-    );
-    res.json({ success: true, cart: cartResult.rows });
+    const cartItems = await Cart.findAll({
+      where: { user_id: req.user.id },
+      include: [{ model: Product }],
+    });
+    res.json({ success: true, cart: cartItems });
   } catch {
     res.status(500).json({ success: false, message: 'Ошибка сервера' });
   }
@@ -96,13 +88,11 @@ export async function addToCart(req, res) {
     return res.status(400).json({ success: false, message: 'Не передан product_id' });
   }
   try {
-    await pool.query(
-      `INSERT INTO carts (user_id, product_id, quantity)
-       VALUES ($1, $2, $3)
-       ON CONFLICT (user_id, product_id)
-       DO UPDATE SET quantity = carts.quantity + $3`,
-      [req.user.id, product_id, quantity || 1],
-    );
+    await Cart.create({
+      user_id: req.user.id,
+      product_id,
+      quantity: quantity || 1,
+    });
     res.json({ success: true });
   } catch (err) {
     console.error('Ошибка добавления в корзину:', err.message);
@@ -112,8 +102,8 @@ export async function addToCart(req, res) {
 
 export async function getAllProducts(req, res) {
   try {
-    const result = await pool.query('SELECT id, name, price, quantity, image FROM products');
-    res.json(result.rows);
+    const result = await Product.findAll();
+    res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -122,14 +112,11 @@ export async function getAllProducts(req, res) {
 export async function getProductById(req, res) {
   const productId = req.params.id;
   try {
-    const result = await pool.query(
-      'SELECT id, name, price, description, image FROM products WHERE id = $1',
-      [productId],
-    );
-    if (result.rows.length === 0) {
+    const result = await Product.findByPk(productId);
+    if (!result) {
       return res.status(404).json({ message: 'Продукт не найден' });
     }
-    res.json(result.rows[0]);
+    res.json(result);
   } catch (err) {
     console.error('Ошибка при получении данных о продукте:', err.message);
     res.status(500).json({ error: err.message });
@@ -140,10 +127,11 @@ export async function getAvatar(req, res) {
   const { avatar_url } = req.body;
   if (!avatar_url) return res.status(400).json({ success: false, message: 'Нет ссылки' });
   try {
-    await pool.query('UPDATE users SET avatar_url = $1 WHERE id = $2', [avatar_url, req.user.id]);
+    await User.update({ avatar_url }, { where: { id: req.user.id } });
     res.json({ success: true, avatar_url });
-  } catch (e) {
-    res.status(500).json({ success: false, message: 'Ошибка обновления аватара' });
+  } catch (err) {
+    console.error('Ошибка при обновлении аватара:', err.message);
+    res.status(500).json({ error: err.message });
   }
 }
 

@@ -1,23 +1,31 @@
-import { JWT_SECRET, jwt } from '../config/JWT.js';
-// Middleware для проверки токена
-function authMiddleware(req, res, next) {
+import { jwt, JWT_SECRET } from '../config/JWT.js';
+
+const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
+
   if (!authHeader) {
     return res.status(401).json({ success: false, message: 'Нет токена' });
   }
-  const parts = authHeader.split(' ');
-  if (parts.length !== 2 || parts[0] !== 'Bearer') {
+
+  const [scheme, token] = authHeader.split(' ');
+
+  if (scheme !== 'Bearer' || !token) {
     return res.status(401).json({ success: false, message: 'Неверный формат токена' });
   }
-  const token = parts[1];
+
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
   } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      console.error('❌ Token expired');
+      return res.status(401).json({ success: false, message: 'Срок действия токена истёк' });
+    }
+
     console.error('Invalid token error', err);
     res.status(401).json({ success: false, message: 'Неверный токен' });
   }
-}
+};
 
 export default authMiddleware;
