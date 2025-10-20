@@ -53,6 +53,7 @@
 │       ├── middlewares/       # JWT и обработка ошибок
 │       ├── routes/            # Определения маршрутов (user.routes.js)
 │       ├── services/          # Сервисы и бизнес-логика
+│       ├── models/            # Модели TypeORM
 │       ├── test/              # Тесты
 │       ├── server.js          # Точка входа Express
 │       ├── app.js             # Основное приложение Express
