@@ -23,7 +23,7 @@
 - **JWT** — аутентификация и авторизация
 - **dotenv** — управление переменными окружения
 - **Swagger** — автодокументация API
-- **PostgreSQL + TypeORM** — База данных
+- **PostgreSQL + Sequalize** — База данных
 - **Docker / docker-compose** — контейнеризация
 
 ### Frontend (`/client`)
