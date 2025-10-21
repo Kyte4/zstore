@@ -53,7 +53,7 @@
 │       ├── middlewares/       # JWT и обработка ошибок
 │       ├── routes/            # Определения маршрутов (user.routes.js)
 │       ├── services/          # Сервисы и бизнес-логика
-│       ├── models/            # Модели TypeORM
+│       ├── models/            # Модели Sequelize
 │       ├── test/              # Тесты
 │       ├── server.js          # Точка входа Express
 │       ├── app.js             # Основное приложение Express
@@ -98,7 +98,7 @@
 
 **Feature-based structure** — для frontend-части
 
-**Разделение ответственности по слоям** — (controllers, services, routes, middlewares)
+**Разделение ответственности по слоям** — (controllers, services, routes, middlewares, tests, models)
 
 ## 👤 Автор
 
