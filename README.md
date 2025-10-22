@@ -62,7 +62,7 @@
 │
 ├── client/                # Frontend
 │   ├── src/
-│   │   ├── components/    # UI компоненты (Header, Footer)
+│   │   ├── components/        # UI компоненты (Header, Footer)
 │   │   ├── pages/
 │   │   │   ├── HomePage.tsx
 │   │   │   ├── CatalogPage.tsx
@@ -70,19 +70,19 @@
 │   │   │   ├── LoginPage.tsx
 │   │   │   ├── ProfilePage.tsx
 │   │   │   └── ContactPage.tsx
-│   │   ├── services/      # Взаимодействие с API
-│   │   ├── store/         # Хранилище состояния
-│   │   ├── types/         # Общие интерфейсы и типы
-│   │   ├── styles/        # Стили
-│   │   └── utils/         # Вспомогательные функции
-│   └── public/            # Статические файлы
+│   │   ├── services/          # Взаимодействие с API
+│   │   ├── store/             # Хранилище состояния
+│   │   ├── types/             # Общие интерфейсы и типы
+│   │   ├── styles/            # Стили
+│   │   └── utils/             # Вспомогательные функции
+│   └── public/                # Статические файлы
 │
 ├── .gitignore
-├── package-lock.json       # Eslint+prettier
-├── package.json            # Eslint+prettier
-├── docker-compose.yml      # Конфигурация docker-compose
-├── Dockerfile              # Dockerfile для контейнера
-├── dump.sql                # SQL-дамп базы данных
+├── package-lock.json          # Eslint+prettier
+├── package.json               # Eslint+prettier
+├── docker-compose.yml         # Конфигурация docker-compose
+├── Dockerfile                 # Dockerfile для контейнера
+├── dump.sql                   # SQL-дамп базы данных
 └── README.md
 </pre>
 
