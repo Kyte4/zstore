@@ -90,17 +90,22 @@ services:
     image: node:20
     working_dir: /workspace
     volumes:
+      - .:/workspace
       - ./server/app:/workspace/server/app
       - ./server/client:/workspace/server/client
     command: >
       sh -c "
-      npm install -g prettier eslint prettier-eslint-cli &&
+      cd /workspace &&
+      npm install -g prettier eslint prettier-eslint-cli eslint-config-prettier eslint-plugin-prettier &&
+      cd server/app && npm install --include=dev || true &&
+      cd ../client && npm install --include=dev || true &&
+      cd /workspace &&
       echo '🔧 Formatting server code...' &&
       prettier --write 'server/app/**/*.{js,jsx,ts,tsx,json,md}' &&
-      eslint --fix 'server/app/**/*.{js,jsx,ts,tsx}' || true &&
+      eslint --fix 'server/app/**/*.{js,mjs}' || true &&
       echo '🎨 Formatting client code...' &&
-      prettier --write 'server/client/**/*.{js,jsx,ts,tsx,json,md}' &&
-      eslint --fix 'server/client/**/*.{js,jsx,ts,tsx}' || true &&
+      prettier --write 'server/client/src/**/*.{js,jsx,ts,tsx,json,md}' &&
+      eslint --fix 'server/client/src/**/*.{js,jsx,ts,tsx}' || true &&
       echo '✅ Formatting complete!'
       "
     profiles: ["dev"]
@@ -120,9 +125,11 @@ services:
       db:
         condition: service_healthy
     command: npm test
-    working_dir: /server/app
+    working_dir: /app
     volumes:
-      - ./server/app:/server/app
+      - ./server/app:/app
+      - ./.eslintrc.json:/app/.eslintrc.json:ro
+      - ./.prettierrc.json:/app/.prettierrc.json:ro
     entrypoint: >
       sh -c "npm install --include=dev && npm test"
 

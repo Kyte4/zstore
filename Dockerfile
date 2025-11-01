@@ -7,6 +7,9 @@ WORKDIR /client
 COPY server/client/package*.json ./
 RUN npm ci
 
+# копируем конфигурационные файлы ESLint и Prettier
+COPY .eslintrc.json .prettierrc.json ./
+
 # копируем исходники и билдим
 COPY server/client/ ./
 RUN npm run build
@@ -20,6 +23,9 @@ WORKDIR /app
 # копируем зависимости сервера
 COPY server/app/package*.json ./
 RUN npm ci
+
+# копируем конфигурационные файлы ESLint и Prettier
+COPY .eslintrc.json .prettierrc.json ./
 
 # копируем код сервера
 COPY server/app/ ./
