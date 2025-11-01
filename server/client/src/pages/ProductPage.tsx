@@ -40,7 +40,13 @@ const ProductPage: React.FC = () => {
     if (!product) return;
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('Сначала войдите в аккаунт!');
+      setNotification({
+        message: 'Сначала войдите в аккаунт!',
+        visible: true,
+      });
+      setTimeout(() => {
+        setNotification((prev) => ({ ...prev, visible: false }));
+      }, 3000);
       return;
     }
     try {
@@ -54,12 +60,30 @@ const ProductPage: React.FC = () => {
       });
       const data = await response.json();
       if (data.success) {
-        alert('Товар добавлен в корзину!');
+        setNotification({
+          message: 'Товар добавлен в корзину!',
+          visible: true,
+        });
+        setTimeout(() => {
+          setNotification((prev) => ({ ...prev, visible: false }));
+        }, 3000);
       } else {
-        alert(data.message || 'Ошибка добавления в корзину');
+        setNotification({
+          message: data.message || 'Ошибка добавления в корзину',
+          visible: true,
+        });
+        setTimeout(() => {
+          setNotification((prev) => ({ ...prev, visible: false }));
+        }, 3000);
       }
     } catch {
-      alert('Ошибка сервера');
+      setNotification({
+        message: 'Ошибка сервера',
+        visible: true,
+      });
+      setTimeout(() => {
+        setNotification((prev) => ({ ...prev, visible: false }));
+      }, 3000);
     }
   };
 
