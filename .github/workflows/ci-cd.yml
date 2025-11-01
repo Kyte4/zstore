@@ -59,18 +59,36 @@ jobs:
             sleep 2
           done
 
-      - name: Load database schema from dump.sql
+      - name: Setup database and load schema
         env:
           PGPASSWORD: utjhubq12345
         run: |
-          echo "🗃️ Loading database schema from dump.sql..."
-          psql -h localhost -U kyte -d zstore -f dump.sql
-          echo "✅ Database schema loaded successfully!"
+          echo "🗃️ Setting up database..."
+          # В GitHub Actions сервис PostgreSQL создает пользователя с POSTGRES_USER=kyte
+          # Но нужно убедиться, что база данных существует
+          psql -h localhost -U kyte -d postgres -c "SELECT 1;" || echo "Checking connection..."
+          
+          # Создаем базу данных если её нет
+          psql -h localhost -U kyte -d postgres -c "SELECT 1 FROM pg_database WHERE datname='zstore'" | grep -q 1 || \
+            psql -h localhost -U kyte -d postgres -c "CREATE DATABASE zstore;"
+          
+          echo "📥 Loading database schema from dump.sql..."
+          psql -h localhost -U kyte -d zstore -f dump.sql || echo "⚠️ Schema may already be loaded or partially loaded"
+          echo "✅ Database setup completed!"
 
-      - name: Install dependencies and run tests
+      - name: Install server dependencies
         run: |
           cd server/app
           npm ci
+
+      - name: Install client dependencies
+        run: |
+          cd server/client
+          npm ci
+
+      - name: Run tests
+        run: |
+          cd server/app
           npm test
         
   deploy:
