@@ -19,6 +19,14 @@ const __dirname = path.dirname(__filename);
 const swaggerPath = path.resolve(__dirname, 'config', 'swagger.yml');
 const swaggerDocument = yaml.load(fs.readFileSync(swaggerPath, 'utf8'));
 
+// Динамически устанавливаем сервер для Swagger
+// Если указан SWAGGER_SERVER_URL, используем его, иначе берём первый из списка
+const swaggerServerUrl = process.env.SWAGGER_SERVER_URL || swaggerDocument.servers?.[0]?.url;
+if (swaggerServerUrl && swaggerDocument.servers) {
+  // Устанавливаем указанный URL как первый (основной) сервер
+  swaggerDocument.servers = [{ url: swaggerServerUrl, description: 'Current server' }];
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));

@@ -34,6 +34,7 @@ services:
       PG_HOST: db
       PG_PORT: 5432
       NODE_ENV: production
+      SWAGGER_SERVER_URL: https://zstore.site
 
       # 💡 добавляем эти 3 строки
       VIRTUAL_HOST: zstore.site,www.zstore.site
