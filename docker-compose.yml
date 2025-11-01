@@ -102,6 +102,10 @@ services:
       --email kek_888@mail.com --agree-tos --no-eff-email
       -d zstore.site -d www.zstore.site"
 
+networks:
+  zstore-network:
+    driver: bridge
+
 
 volumes:
   pgdata:
