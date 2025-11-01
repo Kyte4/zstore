@@ -57,9 +57,12 @@ const CatalogPage: React.FC = () => {
           <div key={product.id} className="product">
             <h2>{product.name}</h2>
             <img
-              src={product.image.replace(/\\/g, '/')}
+              src={product.image ? product.image.replace(/\\/g, '/') : '/assets/images/default-product.png'}
               alt={product.name}
               className="product-image"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/assets/images/default-product.png';
+              }}
             />
             <p>Цена: {product.price} руб.</p>
             <button onClick={() => handleProductClick(product.id)} className="details-button">

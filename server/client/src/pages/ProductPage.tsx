@@ -82,7 +82,14 @@ const ProductPage: React.FC = () => {
       </header>
 
       <main className="product-main">
-        <img src={`${product.image}`} alt={product.name} className="product-image" />
+        <img
+          src={product.image || '/assets/images/default-product.png'}
+          alt={product.name}
+          className="product-image"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = '/assets/images/default-product.png';
+          }}
+        />
         <p className="product-description">{product.description}</p>
         <p className="product-price">Цена: {product.price} руб.</p>
         <button className="add-to-cart-btn" onClick={handleAddToCart}>

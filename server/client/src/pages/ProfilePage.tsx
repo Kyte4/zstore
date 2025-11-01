@@ -119,18 +119,21 @@ const ProfilePage: React.FC = () => {
             </p>
 
             <h3>Ваша корзина:</h3>
-            {user.cart && user.cart.length > 0 ? (
+            {user.cart && Array.isArray(user.cart) && user.cart.length > 0 ? (
               <ul>
                 {user.cart.map((item) => (
                   <li key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     {item.image && (
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt={item.name || 'Товар'}
                         style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
                       />
                     )}
-                    {item.name} — {item.quantity} шт. × {item.price} руб.
+                    {item.name || 'Без названия'} — {item.quantity || 1} шт. × {item.price || 0} руб.
                   </li>
                 ))}
               </ul>
