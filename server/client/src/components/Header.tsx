@@ -12,9 +12,16 @@ const Header = () => {
     fetch('/api/profile', {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch profile');
+        return res.json();
+      })
       .then((data) => {
         if (data.success && data.user) setUsername(data.user.username);
+      })
+      .catch((err) => {
+        console.error('Ошибка загрузки профиля:', err);
+        localStorage.removeItem('token');
       });
   }, []);
   return (
