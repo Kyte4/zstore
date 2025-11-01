@@ -1,0 +1,58 @@
+{
+  "root": true,
+  "env": {
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
+  "ignorePatterns": ["node_modules/", "build/", "dist/"],
+  "overrides": [
+    {
+      "files": ["server/app/**/*.{js,mjs}"],
+      "env": {
+        "node": true,
+        "es2021": true
+      },
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+      }
+    },
+    {
+      "files": ["server/client/src/**/*.{ts,tsx,js,jsx}"],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+      ],
+      "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+      "env": {
+        "browser": true,
+        "es2021": true,
+        "jest": true
+      },
+      "rules": {
+        "prettier/prettier": ["error"],
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+    }
+  ]
+}
+
