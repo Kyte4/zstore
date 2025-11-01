@@ -44,6 +44,14 @@ jobs:
         run: |
           cd server/app
           node -e "import('sequelize').then(() => console.log('✅ Sequelize import works')).catch(e => {console.error(e); process.exit(1);})"
+      
+      - name: Load database schema from dump.sql
+        env:
+          PGPASSWORD: utjhubq12345
+        run: |
+          echo "🗃️ Loading schema from dump.sql..."
+          psql -h localhost -U kyte -d zstore -f dump.sql
+          echo "✅ Database schema restored successfully!"
 
       - name: Run tests
         env:
