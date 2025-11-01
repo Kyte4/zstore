@@ -5,7 +5,10 @@ WORKDIR /client
 
 # копируем зависимости клиента
 COPY server/client/package*.json ./
-RUN npm ci
+
+# Попробовать npm ci, fallback на npm install при ошибке
+RUN npm ci || (echo "⚠️ npm ci failed, falling back to npm install..." && npm install)
+
 
 # копируем конфигурационные файлы ESLint и Prettier
 COPY .eslintrc.json .prettierrc.json ./
@@ -22,7 +25,9 @@ WORKDIR /app
 
 # копируем зависимости сервера
 COPY server/app/package*.json ./
-RUN npm ci
+
+# Попробовать npm ci, fallback на npm install при ошибке
+RUN npm ci || (echo "⚠️ npm ci failed, falling back to npm install..." && npm install)
 
 # копируем конфигурационные файлы ESLint и Prettier
 COPY .eslintrc.json .prettierrc.json ./
