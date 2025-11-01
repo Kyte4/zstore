@@ -18,15 +18,13 @@ const HomePage: React.FC = () => {
               Перейти в каталог
             </button>
           </div>
-          {
-            <div className="hero-image">
-              <img
-                src="/assets/images/daciksmall.png"
-                alt="Чиловый Дацик"
-                className="featured-product"
-              />
-            </div>
-          }
+          <div className="hero-image">
+            <img
+              src="/assets/images/daciksmall.png"
+              alt="Чиловый Дацик"
+              className="featured-product"
+            />
+          </div>
         </section>
 
         <section className="features">
