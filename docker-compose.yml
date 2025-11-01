@@ -19,6 +19,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - zstore-network
 
   app:
     build:
@@ -32,11 +34,56 @@ services:
       PG_HOST: db
       PG_PORT: 5432
       NODE_ENV: production
-    ports:
-      - "5000:5000"
+
+      # 💡 добавляем эти 3 строки
+      VIRTUAL_HOST: zstore.site,www.zstore.site
+      LETSENCRYPT_HOST: zstore.site,www.zstore.site
+      LETSENCRYPT_EMAIL: kek_888@mail.com
+    expose:
+      - "5000" # nginx-proxy слушает только expose, не ports
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - zstore-network
+      - proxy-tier
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:latest
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # 💡 важно — чтобы nginx мог понимать HTTPS заголовки
+      ENABLE_IPV6: "false"
+      TRUST_DOWNSTREAM_PROXY: "true"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+    networks:
+      - proxy-tier
+
+  acme-companion:
+    image: nginxproxy/acme-companion:latest
+    container_name: nginx-proxy-acme
+    restart: always
+    depends_on:
+      - nginx-proxy
+    environment:
+      DEFAULT_EMAIL: kek_888@mail.com
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+    networks:
+      - proxy-tier
 
   formatter:
     image: node:20
@@ -56,9 +103,7 @@ services:
       echo '✅ Formatting complete!'
       "
     profiles: ["dev"]
-    # профили позволяют не запускать этот сервис вместе с app
-    # он запускается вручную командой:
-    # docker-compose run --rm formatter
+
   test:
     build:
       context: .
@@ -76,36 +121,15 @@ services:
     command: npm test
     working_dir: /server/app
     volumes:
-    - ./server/app:/server/app
+      - ./server/app:/server/app
     entrypoint: >
       sh -c "npm install --include=dev && npm test"
-
-  nginx:
-    image: nginx:latest
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
-
-  certbot:
-    image: certbot/certbot
-    container_name: zstore_certbot
-    volumes:
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
-    entrypoint: >
-      sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot
-      --email kek_888@mail.com --agree-tos --no-eff-email
-      -d zstore.site -d www.zstore.site"
 
 networks:
   zstore-network:
     driver: bridge
-
+  proxy-tier:
+    driver: bridge
 
 volumes:
   pgdata:
