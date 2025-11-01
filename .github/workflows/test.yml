@@ -1,0 +1,66 @@
+name: Run Backend Tests
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: kyte
+          POSTGRES_PASSWORD: utjhubq12345
+          POSTGRES_DB: zstore
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U kyte -d zstore"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd server/app
+          npm ci
+
+      - name: Verify sequelize module
+        run: |
+          cd server/app
+          node -e "import('sequelize').then(() => console.log('✅ Sequelize import works')).catch(e => {console.error(e); process.exit(1);})"
+
+      - name: Run tests
+        env:
+          PG_USER: kyte
+          PG_PASSWORD: utjhubq12345
+          PG_DB: zstore
+          PG_HOST: localhost
+          PG_PORT: 5432
+          NODE_ENV: test
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          cd server/app
+          echo "📦 Checking current dir and node_modules..."
+          pwd && ls -la
+          echo "🧪 Running tests..."
+          npm test
+
+      - name: Show Postgres logs if tests failed
+        if: failure()
+        run: docker logs $(docker ps -q --filter "ancestor=postgres:15")
