@@ -72,7 +72,7 @@ jobs:
           cd server/app
           npm ci
           npm test
-
+        
   deploy:
     runs-on: ubuntu-latest
     needs: test
@@ -90,18 +90,33 @@ jobs:
           script: |
             set -e
             echo "🚀 Starting deployment on VPS..."
-            
-            # Очищаем и клонируем заново
+
+            # Проверяем, что docker и compose установлены
+            if ! command -v docker &> /dev/null; then
+              echo "🐳 Installing Docker..."
+              apt update && apt install -y docker.io
+            fi
+
+            if ! docker compose version &> /dev/null; then
+              echo "🧩 Installing Docker Compose plugin..."
+              apt update && apt install -y docker-compose-plugin
+            fi
+
             echo "🗑️ Cleaning up old deployment..."
             rm -rf ~/zstore
-            
+
             echo "📦 Cloning fresh repository..."
-            git clone https://github.com/${{ github.repository }} ~/zstore
-            
+            git config --global http.postBuffer 524288000
+            git config --global http.version HTTP/1.1
+            git clone --depth 1 https://github.com/${{ github.repository }} ~/zstore || {
+              echo "❌ Git clone failed, retrying in 10s..."
+              sleep 10
+              git clone --depth 1 https://github.com/${{ github.repository }} ~/zstore
+            }
+
             cd ~/zstore
-            
+
             echo "🔧 Generating JWT_SECRET..."
-            # Генерируем случайный JWT_SECRET
             JWT_SECRET=$(openssl rand -base64 32)
             cat > .env << EOF
             JWT_SECRET=$JWT_SECRET
@@ -113,21 +128,19 @@ jobs:
             PORT=5000
             NODE_ENV=production
             EOF
-            
-            # Копируем .env в папку server/app чтобы он был доступен при сборке
+
             cp .env server/app/.env
-            
-            echo "🧱 Stopping old containers..."
-            docker compose down || true
-            
-            echo "🏗️ Building new containers..."
+
+            echo "🧱 Stopping old containers (if any)..."
+            docker compose down -v || true
+
+            echo "🏗️ Building and starting containers..."
             docker compose up -d --build
-            
-            # Даем время на запуск
+
             echo "⏳ Waiting for containers to start..."
-            sleep 30
-            
+            sleep 25
+
             echo "📊 Final containers status:"
             docker ps -a
-            
+
             echo "✅ Deployment completed successfully!"
