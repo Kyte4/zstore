@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/login.css'; // Импортируем стили для страницы входа
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -21,7 +23,8 @@ const LoginPage: React.FC = () => {
         const data = await response.json();
         if (data.success && data.token) {
           localStorage.setItem('token', data.token);
-          window.location.href = '/profile';
+          navigate('/profile');
+          window.location.reload();
         } else {
           setError(data.message || 'Ошибка входа');
         }
@@ -43,7 +46,8 @@ const LoginPage: React.FC = () => {
           const loginData = await loginRes.json();
           if (loginData.success && loginData.token) {
             localStorage.setItem('token', loginData.token);
-            window.location.href = '/profile';
+            navigate('/profile');
+            window.location.reload();
           } else {
             setError('Регистрация прошла, но не удалось войти');
           }
