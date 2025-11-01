@@ -111,7 +111,7 @@ describe('ZStore API', () => {
   describe('POST /api/profile/avatar-url', () => {
     it('should update avatar url', async () => {
       const res = await request(app)
-        .put('/api/avatar')
+        .post('/api/profile/avatar-url')
         .set('Authorization', `Bearer ${token}`)
         .send({ avatar_url: 'https://example.com/avatar.png' });
       expect(res.statusCode).toBe(200);

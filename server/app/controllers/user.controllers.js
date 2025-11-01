@@ -123,7 +123,7 @@ export async function getProductById(req, res) {
   }
 }
 
-export async function getAvatar(req, res) {
+export async function updateAvatarUrl(req, res) {
   const { avatar_url } = req.body;
   if (!avatar_url) return res.status(400).json({ success: false, message: 'Нет ссылки' });
   try {
@@ -142,5 +142,5 @@ export default {
   addToCart,
   getAllProducts,
   getProductById,
-  getAvatar,
+  updateAvatarUrl,
 };

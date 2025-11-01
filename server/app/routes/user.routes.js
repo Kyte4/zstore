@@ -13,7 +13,7 @@ router.get('/profile', auth, userController.getUserProfile);
 router.put('/profile', auth, userController.updateUserProfile);
 router.get('/cart', auth, userController.getCartItems);
 router.post('/cart', auth, userController.addToCart);
-router.put('/avatar', auth, userController.getAvatar);
+router.post('/profile/avatar-url', auth, userController.updateAvatarUrl);
 
 router.get('/products', userController.getAllProducts);
 router.get('/products/:id', userController.getProductById);
