@@ -118,10 +118,10 @@ jobs:
             cp .env server/app/.env
             
             echo "🧱 Stopping old containers..."
-            docker-compose down || true
+            docker compose down || true
             
             echo "🏗️ Building new containers..."
-            docker-compose up -d --build
+            docker compose up -d --build
             
             # Даем время на запуск
             echo "⏳ Waiting for containers to start..."
