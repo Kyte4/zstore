@@ -15,4 +15,3 @@ export default function errorHandler(err, req, res, _next) {
   console.error('Global error handler:', err);
   res.status(Number(status) || 500).json(response);
 }
-

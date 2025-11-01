@@ -133,7 +133,8 @@ const ProfilePage: React.FC = () => {
                         }}
                       />
                     )}
-                    {item.name || 'Без названия'} — {item.quantity || 1} шт. × {item.price || 0} руб.
+                    {item.name || 'Без названия'} — {item.quantity || 1} шт. × {item.price || 0}{' '}
+                    руб.
                   </li>
                 ))}
               </ul>

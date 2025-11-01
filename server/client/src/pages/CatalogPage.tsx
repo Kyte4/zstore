@@ -57,7 +57,11 @@ const CatalogPage: React.FC = () => {
           <div key={product.id} className="product">
             <h2>{product.name}</h2>
             <img
-              src={product.image ? product.image.replace(/\\/g, '/') : '/assets/images/default-product.png'}
+              src={
+                product.image
+                  ? product.image.replace(/\\/g, '/')
+                  : '/assets/images/default-product.png'
+              }
               alt={product.name}
               className="product-image"
               onError={(e) => {
