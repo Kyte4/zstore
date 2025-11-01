@@ -87,6 +87,14 @@ jobs:
           npm ci
 
       - name: Run tests
+        env:
+          PG_USER: kyte
+          PG_PASSWORD: utjhubq12345
+          PG_DB: zstore
+          PG_HOST: localhost
+          PG_PORT: 5432
+          NODE_ENV: test
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           cd server/app
           npm test
