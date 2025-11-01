@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/contact.css';
 
 const ContactPage: React.FC = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     message: '',
