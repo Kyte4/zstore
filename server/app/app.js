@@ -53,7 +53,6 @@ app.get('/', (_req, res) => {
   return res.status(200).json({ success: true, message: 'API is running', docs: '/api/docs' });
 });
 
-// centralized error handler (must be the last middleware)
 app.use(errorHandler);
 
 export default app;
