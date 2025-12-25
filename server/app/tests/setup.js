@@ -1,4 +1,4 @@
-import sequelize from '../config/dbConfig.js';
+import sequelize from '../config/config.js';
 
 afterAll(async () => {
   await sequelize.close();
