@@ -1,6 +1,5 @@
 # 🛒 ZStore
 
-
 ## https://zstore.site/
 
 **ZStore** — это полнофункциональное веб-приложение интернет-магазина, созданное на **Node.js (Express)** и **React (TypeScript)**.  
@@ -38,7 +37,6 @@
 
 - **CI/CD** — GitHub Actions + SSH Deploy
 - **Testing** — Jest
-
 
 ---
 
@@ -102,6 +100,5 @@
 
 ## 👤 Автор
 
-- **Kyte4**
 - **🔗 GitHub: [Kyte4](https://github.com/Kyte4)**
 - **📨 Telegramm: https://t.me/kyte4**
