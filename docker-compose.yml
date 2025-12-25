@@ -35,8 +35,6 @@ services:
       PG_PORT: 5432
       NODE_ENV: production
       SWAGGER_SERVER_URL: https://zstore.site
-
-      # 💡 добавляем эти 3 строки
       VIRTUAL_HOST: zstore.site,www.zstore.site
       LETSENCRYPT_HOST: zstore.site,www.zstore.site
       LETSENCRYPT_EMAIL: kek_888@mail.com
