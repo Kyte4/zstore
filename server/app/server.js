@@ -1,5 +1,5 @@
 import app from './app.js';
-import sequelize from './config/dbConfig.js';
+import sequelize from './config/config.js';
 
 const PORT = Number(process.env.PORT);
 
